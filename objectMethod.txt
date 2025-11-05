@@ -1,0 +1,94 @@
+Object Method
+
+
+JavaScript “Object” methods — what they do & how to use them
+
+Below is a compact, up-to-date cheat sheet of all standard methods on Object (static) and methods on Object.prototype (instance). I’ve also noted a few deprecated ones and the closely related Reflect helpers.
+
+Static methods on Object (call as Object.method(...))
+
+Object.assign(target, ...sources) → Copies enumerable own props from sources into target; returns target.
+Syntax: Object.assign({}, a, b) . 
+
+
+Object.create(proto, [propertiesObject]) → Creates a new object with proto as its prototype; optionally defines properties.
+Syntax: Object.create(SomeProto, { x: { value: 1, enumerable: true } }). 
+
+
+Object.defineProperty(obj, key, descriptor) → Defines/updates one property with a descriptor.
+Syntax: Object.defineProperty(o, "id", { value: 1, writable: false }). 
+
+Object.defineProperties(obj, descriptors) → Defines/updates multiple properties at once.
+Syntax: Object.defineProperties(o, { a:{value:1}, b:{get(){...}} }). 
+
+Object.entries(obj) → Returns [[key, value], ...] of own enumerable string-keyed props.
+Syntax: Object.entries(user). 
+
+Object.fromEntries(iterable) → Builds an object from key–value pairs (inverse of entries).
+Syntax: Object.fromEntries(new URLSearchParams("?a=1&b=2")). 
+
+Object.keys(obj) → Array of own enumerable string keys.
+Syntax: Object.keys(user). 
+
+Object.values(obj) → Array of own enumerable values.
+Syntax: Object.values(user). 
+
+Object.getOwnPropertyDescriptor(obj, key) /
+Object.getOwnPropertyDescriptors(obj) → Gets one/all property descriptors.
+Syntax: Object.getOwnPropertyDescriptors(o). 
+
+Object.getOwnPropertyNames(obj) → Array of own string keys (enumerable + non-enumerable).
+Syntax: Object.getOwnPropertyNames(o). 
+
+Object.getOwnPropertySymbols(obj) → Array of own symbol keys.
+Syntax: Object.getOwnPropertySymbols(o). 
+
+Object.getPrototypeOf(obj) / Object.setPrototypeOf(obj, proto) → Read/set an object’s prototype.
+Syntax: Object.getPrototypeOf(o); Object.setPrototypeOf(o, proto). 
+
+Object.hasOwn(obj, key) → True if key is an own prop (no prototype chain check).
+Syntax: Object.hasOwn(user, "id"). 
+
+Object.is(a, b) → Same-value equality (treats NaN equal; +0 vs -0 different).
+Syntax: Object.is(NaN, NaN) // true. 
+
+Object.isExtensible(obj) / Object.preventExtensions(obj) → Query/disable adding new props.
+Syntax: Object.preventExtensions(o). 
+
+Object.isFrozen(obj) / Object.freeze(obj) → Query/make object non-extensible and all props non-writable, non-configurable.
+Syntax: Object.freeze(o). 
+
+Object.isSealed(obj) / Object.seal(obj) → Query/make object non-extensible and all props non-configurable.
+Syntax: Object.seal(o). 
+
+Object.groupBy(items, callbackFn) → Groups an iterable into an object (keys from callbackFn), returning a null-prototype object of arrays.
+Syntax: Object.groupBy(arr, (v) => v.type) . 
+
+
+MDN’s “Object” page lists these static methods comprehensively and is a great quick reference. 
+
+Instance methods on Object.prototype (call on any object)
+
+hasOwnProperty(key) → True if key is an own prop (legacy; prefer Object.hasOwn).
+Syntax: obj.hasOwnProperty("id"). 
+
+isPrototypeOf(obj) → True if this object appears in obj’s prototype chain.
+Syntax: Array.prototype.isPrototypeOf([]). 
+
+propertyIsEnumerable(key) → True if key is an own enumerable prop.
+Syntax: obj.propertyIsEnumerable("x"). 
+
+toString() / toLocaleString() / valueOf() → Generic conversion hooks used by the language (usually called implicitly).
+Syntax: obj.toString(), obj.valueOf(). 
+
+Tip: Because objects can shadow these names, MDN recommends calling them with Object.prototype.method.call(obj, ...) when you truly need the built-ins. 
+
+Deprecated / non-standard (avoid)
+
+__proto__ accessor (prototype getter/setter) — deprecated; use Object.getPrototypeOf/setPrototypeOf. 
+
+__defineGetter__ / __defineSetter__ / __lookupGetter__ / __lookupSetter__ — deprecated; use Object.defineProperty / Object.getOwnPropertyDescriptor. 
+
+Related: Reflect mirrors many object operations
+
+Reflect provides low-level, function-style forms of property operations (useful with Proxies): e.g., Reflect.get, Reflect.set, Reflect.defineProperty, Reflect.ownKeys, Reflect.has, Reflect.deleteProperty, Reflect.preventExtensions, etc. Syntax example: Reflect.set(obj, "x", 1). 
